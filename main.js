@@ -1,41 +1,88 @@
-$(function () {
-	var windowURL = window.URL || window.webkitURL;
+"use strict";
 
-	$('#imageFile').on("change", function(){
-		if(this.files.length == 0) {
+$(function () {
+	let windowURL = window.URL || window.webkitURL;
+
+	// File API が使用できない場合は諦めます.
+	if( ! window.FileReader) {
+		window.alert("File API がサポートされていません。");
+		return false;
+	}
+
+	// イベントをキャンセルするハンドラです.
+	let cancelEvent = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		return false;
+	};
+
+	let fileAnalyze = function(file) {
+		$("#exifInfo").empty();
+
+		if ( ! file) {
 			return;
 		}
 
-		let selectFile = this.files[0];
-		if (selectFile) {
-			console.log(selectFile);
-			// window.alert("file: " + selectFile.name);
+		// window.alert("file: " + file.name);
 
-			if (selectFile.type !== 'image/jpeg' && selectFile.type !== 'image/png') {
-				window.alert('サポートされていない形式です。');
-				return;
-			}
-
-			var img = new Image();
-			img.src = windowURL.createObjectURL(selectFile);
-			img.onload = function() {
-				EXIF.getData(this, function(){
-					var exif = EXIF.getAllTags(this);
-					for (let key in exif) {
-						if (exif.hasOwnProperty(key)) {
-							// console.log(key + ": " + exif[key]);
-
-							$tr = $("<tr>");
-							$tr.append($("<td>").text(key));
-							$tr.append($("<td>").text(exif[key]));
-
-							$("#exifInfo").append($tr);
-						}
-					}
-				});
-
-				windowURL.revokeObjectURL(this.src);
-			};
+		if (file.type !== 'image/jpeg') {
+			$("#exifInfo").text("サポートされていない形式です。");
+			return;
 		}
+
+		let img = new Image();
+		img.src = windowURL.createObjectURL(file);
+		img.onload = function() {
+			EXIF.getData(this, function(){
+				let exif = EXIF.getAllTags(this);
+				if (Object.keys(exif).length === 0) {
+					$("#exifInfo").text("Exif情報がありません。");
+					return;
+				}
+
+				let $table = $("<table>");
+
+				for (let key in exif) {
+					if ( ! exif.hasOwnProperty(key)) {
+						continue;
+					}
+
+					// console.log(key + ": " + exif[key]);
+
+					let $tr = $("<tr>");
+					$tr.append($("<td>").text(key));
+					$tr.append($("<td>").text(exif[key]));
+
+					$table.append($tr);
+				}
+
+				$("#exifInfo").append($table);
+			});
+
+			windowURL.revokeObjectURL(this.src);
+		};
+		
+		$('#previewArea').empty().append(img);
+	};
+
+	$("#dropArea")
+		.bind("dragenter", cancelEvent)
+		.bind("dragover", cancelEvent)
+		.bind("drop", function(event) {
+			// ファイルは複数ドロップされる可能性がありますが, ここでは 1 つ目のファイルを扱います.
+			let file = event.originalEvent.dataTransfer.files[0];
+	
+			fileAnalyze(file);
+	
+			// デフォルトの処理をキャンセルします.
+			return cancelEvent(event);
+		});
+
+	$('#selectFile').on("change", function(){
+		if(this.files.length === 0) {
+			return;
+		}
+
+		fileAnalyze(this.files[0]);
 	});
 });
