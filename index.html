@@ -1,20 +1,20 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta name="robots" content="noindex, nofollow">
-	<meta name="googlebot" content="noindex, nofollow">
+	<meta name="robots" content="noarchive">
+	<meta name="googlebot" content="noarchive">
 
 	<link rel="stylesheet" type="text/css" href="main.css">
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js"></script>
-	<script type="text/javascript" src="main.js"></script>
+
+	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.js" integrity="sha256-/Fm7RRv6kWe/YyuDTdTsVJxgTaq5XkO1UfLbbYII/ao=" crossorigin="anonymous"></script>
+	<script src="main.js"></script>
 </head>
-	<body>
-		<input id="selectFile" type="file" accept="image/jpeg">
-		<div id="dropArea">ここにドロップ</div>
-		<main>
-			<div id="exifInfo" style="width: 50%;overflow: scroll;float: left;"></div>
-			<div id="previewArea" style="width: 50%;float: left;"></div>
-		</main>
-	</body>
+<body>
+<div id="dropArea">ここにjpeg画像をドロップ</div>
+<main style="height: 80%">
+	<div id="exifInfo"></div>
+	<div id="previewArea"></div>
+</main>
+</body>
 </html>

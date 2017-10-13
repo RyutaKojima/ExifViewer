@@ -17,13 +17,12 @@ $(function () {
 	};
 
 	let fileAnalyze = function(file) {
-		$("#exifInfo").empty();
+		$("#exifInfo").text("解析中...");
 
 		if ( ! file) {
+			$("#exifInfo").text("ファイルが読み込めませんでした。");
 			return;
 		}
-
-		// window.alert("file: " + file.name);
 
 		if (file.type !== 'image/jpeg') {
 			$("#exifInfo").text("サポートされていない形式です。");
@@ -31,6 +30,8 @@ $(function () {
 		}
 
 		let img = new Image();
+		img.alt = file.name;
+		img.title = file.name;
 		img.src = windowURL.createObjectURL(file);
 		img.onload = function() {
 			EXIF.getData(this, function(){
@@ -56,7 +57,7 @@ $(function () {
 					$table.append($tr);
 				}
 
-				$("#exifInfo").append($table);
+				$("#exifInfo").empty().append($table);
 			});
 
 			windowURL.revokeObjectURL(this.src);
@@ -78,11 +79,9 @@ $(function () {
 			return cancelEvent(event);
 		});
 
-	$('#selectFile').on("change", function(){
-		if(this.files.length === 0) {
-			return;
-		}
-
-		fileAnalyze(this.files[0]);
-	});
+	// $('#selectFile').on("change", function(){
+	// 	if(this.files.length) {
+	// 		fileAnalyze(this.files[0]);
+	// 	}
+	// });
 });
