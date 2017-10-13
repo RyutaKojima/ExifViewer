@@ -45,11 +45,26 @@ $(function () {
 
 				// console.log(key + ": " + exif[key]);
 
-				let label = labelConfig.hasOwnProperty(key) ? labelConfig[key] : key;
+				let label = viewerConfig.FieldName.hasOwnProperty(key) ? viewerConfig.FieldName[key] : key;
+				let value = exif[key];
+
+				if (viewerConfig.valueFormat.hasOwnProperty(key)) {
+					let fomat = viewerConfig.valueFormat[key];
+					switch (fomat.type) {
+						case "replace":
+							if (fomat.label.hasOwnProperty(value)) {
+								value = fomat.label[value];
+							}
+							break;
+						case "unit":
+							value += fomat.label;
+							break;
+					}
+				}
 
 				let $tr = $("<tr>");
 				$tr.append($("<td>").addClass("exifHeader").text(label));
-				$tr.append($("<td>").addClass("exifValue").text(exif[key]));
+				$tr.append($("<td>").addClass("exifValue").text(value));
 
 				$table.append($tr);
 			}
