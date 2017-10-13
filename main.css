@@ -19,6 +19,14 @@
 	float: left;
 }
 
+#exifInfo tr:nth-of-type(odd) {
+	background-color: ghostwhite;
+}
+.exifHeader {
+	width: 20em;
+	font-weight: bold;
+}
+
 #previewArea {
 	width: 50%;
 	float: left;

@@ -50,10 +50,12 @@ $(function () {
 					}
 
 					// console.log(key + ": " + exif[key]);
+					
+					let label = labelConfig.hasOwnProperty(key) ? labelConfig[key] : key;
 
 					let $tr = $("<tr>");
-					$tr.append($("<td>").text(key));
-					$tr.append($("<td>").text(exif[key]));
+					$tr.append($("<td>").addClass("exifHeader").text(label));
+					$tr.append($("<td>").addClass("exifValue").text(exif[key]));
 
 					$table.append($tr);
 				}
