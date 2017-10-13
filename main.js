@@ -18,6 +18,7 @@ $(function () {
 
 	let fileAnalyze = function(file) {
 		$("#exifInfo").text("解析中...");
+		$('#previewArea').empty();
 
 		if ( ! file) {
 			$("#exifInfo").text("ファイルが読み込めませんでした。");
@@ -62,7 +63,7 @@ $(function () {
 
 			windowURL.revokeObjectURL(this.src);
 		};
-		
+
 		$('#previewArea').empty().append(img);
 	};
 
