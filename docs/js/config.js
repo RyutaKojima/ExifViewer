@@ -23,7 +23,7 @@ let viewerConfig = {
 			}
 		},
 		FocalLength: {
-			type: "unit",
+			type: "suffix",
 			label: "mm",
 		}
 	},

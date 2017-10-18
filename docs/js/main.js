@@ -1,7 +1,48 @@
 "use strict";
 
+class ExifUtil
+{
+	constructor(configFieldName, configValueFormat) {
+		this.FieldName   = configFieldName;
+		this.ValueFormat = configValueFormat;
+	}
+
+	static isSupport(mimeType) {
+		const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
+		return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
+	}
+
+	getFieldNameLabel(key) {
+		return this.FieldName.hasOwnProperty(key) ? this.FieldName[key] : key;
+	}
+
+	getExifValueLabel(key, value) {
+		if ( ! this.ValueFormat.hasOwnProperty(key)) {
+			return value;
+		}
+
+		let fomat = this.ValueFormat[key];
+		switch (fomat.type) {
+			case "replace":
+				if (fomat.label.hasOwnProperty(value)) {
+					value = fomat.label[value];
+				}
+				break;
+			case "prefix":
+				value = fomat.label + value;
+				break;
+			case "suffix":
+				value += fomat.label;
+				break;
+		}
+
+		return value;
+	}
+}
+
 $(function () {
 	let windowURL = window.URL || window.webkitURL;
+	let exifUtil = new ExifUtil(viewerConfig.FieldName, viewerConfig.valueFormat);
 
 	if( ! window.FileReader) {
 		window.alert("File API がサポートされていません。");
@@ -14,26 +55,24 @@ $(function () {
 		return false;
 	};
 
-	let fileAnalyze = function(file) {
-		const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
-
-		$("#exifInfo").text("解析中...");
-		$('#previewArea').empty();
+	let analyzeExif = function(file, $infoBox, $imageBox) {
+		$infoBox.text("解析中...");
+		$imageBox.empty();
 
 		if ( ! file) {
-			$("#exifInfo").text("ファイルが読み込めませんでした。");
+			$infoBox.text("ファイルが読み込めませんでした。");
 			return;
 		}
 
-		if (SUPPORT_FILE_TYPE.indexOf(file.type) === -1) {
-			$("#exifInfo").text("サポートされていない形式です。");
+		if ( ! ExifUtil.isSupport(file.type)) {
+			$infoBox.text("サポートされていない形式です。");
 			return;
 		}
 
 		EXIF.getData(file, function(){
 			let exif = EXIF.getAllTags(this);
 			if (Object.keys(exif).length === 0) {
-				$("#exifInfo").text("Exif情報がありません。");
+				$infoBox.text("Exif情報がありません。");
 				return;
 			}
 
@@ -43,32 +82,12 @@ $(function () {
 					continue;
 				}
 
-				// console.log(key + ": " + exif[key]);
-
-				let label = viewerConfig.FieldName.hasOwnProperty(key) ? viewerConfig.FieldName[key] : key;
-				let value = exif[key];
-
-				if (viewerConfig.valueFormat.hasOwnProperty(key)) {
-					let fomat = viewerConfig.valueFormat[key];
-					switch (fomat.type) {
-						case "replace":
-							if (fomat.label.hasOwnProperty(value)) {
-								value = fomat.label[value];
-							}
-							break;
-						case "unit":
-							value += fomat.label;
-							break;
-					}
-				}
-
 				let $tr = $("<tr>");
-				$tr.append($("<td>").addClass("exifHeader").text(label));
-				$tr.append($("<td>").addClass("exifValue").text(value));
-
+				$tr.append($("<td>").addClass("exifHeader").text(exifUtil.getFieldNameLabel(key)));
+				$tr.append($("<td>").addClass("exifValue" ).text(exifUtil.getExifValueLabel(key, exif[key])));
 				$table.append($tr);
 			}
-			$("#exifInfo").empty().append($table);
+			$infoBox.empty().append($table);
 		});
 
 		let img = new Image();
@@ -77,7 +96,7 @@ $(function () {
 		img.src = windowURL.createObjectURL(file);
 		img.onload = function() {
 			windowURL.revokeObjectURL(this.src);
-			$('#previewArea').append(this);
+			$imageBox.append(this);
 		}
 	};
 
@@ -87,10 +106,9 @@ $(function () {
 		.bind("drop", function(event) {
 			// ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
 			let file = event.originalEvent.dataTransfer.files[0];
-	
-			fileAnalyze(file);
-	
-			// デフォルトの処理をキャンセルします.
+
+			analyzeExif(file, $("#exifInfo"), $('#previewArea'));
+
 			return cancelEvent(event);
 		});
 });
