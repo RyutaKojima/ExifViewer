@@ -1,4 +1,4 @@
 # ExifViewr
 
 ## Demo
-https://ryutakojima.github.io/ExifViewr/
+https://ryutakojima.github.io/ExifViewer/
