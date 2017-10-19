@@ -13,7 +13,7 @@ module.exports = [
             path: path.join(__dirname, 'docs/css'),
             filename: '[name].css'
         },
-		devtool: (PRODUCTION ? false : 'source-map'),
+		devtool: (PRODUCTION ? false : 'inline-source-map'),
         module: {
             loaders: [
 				{
