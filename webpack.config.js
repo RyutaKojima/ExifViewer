@@ -1,6 +1,7 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const PRODUCTION = process.env.NODE_ENV === 'production';
 
 module.exports = [
     {
@@ -12,6 +13,7 @@ module.exports = [
             path: path.join(__dirname, 'docs/css'),
             filename: '[name].css'
         },
+		devtool: (PRODUCTION ? false : 'source-map'),
         module: {
             loaders: [
 				{
@@ -26,7 +28,10 @@ module.exports = [
                     test: /\.scss$/,
                     loader: ExtractTextPlugin.extract({
 						fallback: 'style-loader', 
-						use: 'css-loader!sass-loader',
+						use: (PRODUCTION
+								? 'css-loader?url=false&minimize!sass-loader'
+								: 'css-loader?url=false&sourceMap!sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true'
+						),
 						publicPath: 'build'
                     })
                 }
