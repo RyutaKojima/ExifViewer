@@ -70,67 +70,19 @@
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _config = __webpack_require__(1);
 
 var _config2 = _interopRequireDefault(_config);
 
+var _exif_util = __webpack_require__(2);
+
+var _exif_util2 = _interopRequireDefault(_exif_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ExifUtil = function () {
-	function ExifUtil(configFieldName, configValueFormat) {
-		_classCallCheck(this, ExifUtil);
-
-		this.FieldName = configFieldName;
-		this.ValueFormat = configValueFormat;
-	}
-
-	_createClass(ExifUtil, [{
-		key: 'getFieldNameLabel',
-		value: function getFieldNameLabel(key) {
-			return this.FieldName.hasOwnProperty(key) ? this.FieldName[key] : key;
-		}
-	}, {
-		key: 'getExifValueLabel',
-		value: function getExifValueLabel(key, value) {
-			if (!this.ValueFormat.hasOwnProperty(key)) {
-				return value;
-			}
-
-			var fomat = this.ValueFormat[key];
-			switch (fomat.type) {
-				case "replace":
-					if (fomat.label.hasOwnProperty(value)) {
-						value = fomat.label[value];
-					}
-					break;
-				case "prefix":
-					value = fomat.label + value;
-					break;
-				case "suffix":
-					value += fomat.label;
-					break;
-			}
-
-			return value;
-		}
-	}], [{
-		key: 'isSupport',
-		value: function isSupport(mimeType) {
-			var SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
-			return SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1;
-		}
-	}]);
-
-	return ExifUtil;
-}();
 
 $(function () {
 	var windowURL = window.URL || window.webkitURL;
-	var exifUtil = new ExifUtil(_config2.default.FieldName, _config2.default.valueFormat);
+	var exifUtil = new _exif_util2.default(_config2.default.FieldName, _config2.default.valueFormat);
 
 	if (!window.FileReader) {
 		window.alert("File API がサポートされていません。");
@@ -152,7 +104,7 @@ $(function () {
 			return;
 		}
 
-		if (!ExifUtil.isSupport(file.type)) {
+		if (!_exif_util2.default.isSupport(file.type)) {
 			$infoBox.text("サポートされていない形式です。");
 			return;
 		}
@@ -375,6 +327,72 @@ exports.default = {
 		GPSHPositioningError: "水平方向測位誤差"
 	}
 };
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ExifUtil = function () {
+	function ExifUtil(configFieldName, configValueFormat) {
+		_classCallCheck(this, ExifUtil);
+
+		this.FieldName = configFieldName;
+		this.ValueFormat = configValueFormat;
+	}
+
+	_createClass(ExifUtil, [{
+		key: 'getFieldNameLabel',
+		value: function getFieldNameLabel(key) {
+			return this.FieldName.hasOwnProperty(key) ? this.FieldName[key] : key;
+		}
+	}, {
+		key: 'getExifValueLabel',
+		value: function getExifValueLabel(key, value) {
+			if (!this.ValueFormat.hasOwnProperty(key)) {
+				return value;
+			}
+
+			var fomatType = this.ValueFormat[key].type;
+			var fomatLabel = this.ValueFormat[key].label;
+			switch (fomatType) {
+				case "replace":
+					if (fomatLabel.hasOwnProperty(value)) {
+						value = fomatLabel[value];
+					}
+					break;
+				case "prefix":
+					value = fomatLabel + value;
+					break;
+				case "suffix":
+					value += fomatLabel;
+					break;
+			}
+
+			return value;
+		}
+	}], [{
+		key: 'isSupport',
+		value: function isSupport(mimeType) {
+			var SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
+			return SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1;
+		}
+	}]);
+
+	return ExifUtil;
+}();
+
+exports.default = ExifUtil;
 
 /***/ })
 /******/ ]);

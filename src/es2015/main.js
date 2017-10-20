@@ -1,46 +1,7 @@
 "use strict";
 
 import viewerConfig from './config.js';
-
-class ExifUtil
-{
-	constructor(configFieldName, configValueFormat) {
-		this.FieldName   = configFieldName;
-		this.ValueFormat = configValueFormat;
-	}
-
-	static isSupport(mimeType) {
-		const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
-		return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
-	}
-
-	getFieldNameLabel(key) {
-		return this.FieldName.hasOwnProperty(key) ? this.FieldName[key] : key;
-	}
-
-	getExifValueLabel(key, value) {
-		if ( ! this.ValueFormat.hasOwnProperty(key)) {
-			return value;
-		}
-
-		let fomat = this.ValueFormat[key];
-		switch (fomat.type) {
-			case "replace":
-				if (fomat.label.hasOwnProperty(value)) {
-					value = fomat.label[value];
-				}
-				break;
-			case "prefix":
-				value = fomat.label + value;
-				break;
-			case "suffix":
-				value += fomat.label;
-				break;
-		}
-
-		return value;
-	}
-}
+import ExifUtil from './exif_util.js';
 
 $(function () {
 	let windowURL = window.URL || window.webkitURL;
@@ -51,13 +12,13 @@ $(function () {
 		return false;
 	}
 
-	let cancelEvent = function(event) {
+	let cancelEvent = (event) => {
 		event.preventDefault();
 		event.stopPropagation();
 		return false;
 	};
 
-	let analyzeExif = function(file, $infoBox, $imageBox) {
+	let analyzeExif = (file, $infoBox, $imageBox) => {
 		$infoBox.text("解析中...");
 		$imageBox.empty();
 
