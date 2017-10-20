@@ -1,6 +1,6 @@
 "use strict";
 
-let viewerConfig = {
+export default {
 	valueFormat: {
 		Orientation: {
 			type: "replace",
