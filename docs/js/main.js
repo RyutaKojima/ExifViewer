@@ -140,12 +140,27 @@ $(function () {
 		};
 	};
 
-	$("#dropArea").bind("dragenter", cancelEvent).bind("dragover", cancelEvent).bind("drop", function (event) {
+	$("body").bind("dragenter", function (event) {
+		$("#dropArea").addClass("dropping");
+		$("#overlay").show();
+		return cancelEvent(event);
+	}).bind("dragover", cancelEvent).bind("drop", function (event) {
+		$("#exifInfo").empty();
+		$('#previewArea').empty();
+
+		$("#dropArea").removeClass("dropping");
+		$("#overlay").hide();
+		return cancelEvent(event);
+	});
+
+	$("#dropArea").bind("drop", function (event) {
 		// ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
 		var file = event.originalEvent.dataTransfer.files[0];
 
 		analyzeExif(file, $("#exifInfo"), $('#previewArea'));
 
+		$("#dropArea").removeClass("dropping");
+		$("#overlay").hide();
 		return cancelEvent(event);
 	});
 });
