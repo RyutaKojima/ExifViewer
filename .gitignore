@@ -1,4 +1,10 @@
-# Created by .ignore support plugin (hsz.mobi)
+# IDE's project dir
 /.idea/
-/node_modules/
 /nbproject/
+
+# node (npm)
+/node_modules/
+/package-lock.json
+/npm-debug.log
+
+# other

@@ -1,11 +1,9 @@
-"use strict";
+import viewerConfig from './config';
+import ExifUtil from './exif_util';
 
-import viewerConfig from './config.js';
-import ExifUtil from './exif_util.js';
-
-$(function () {
-	let windowURL = window.URL || window.webkitURL;
-	let exifUtil = new ExifUtil(viewerConfig.FieldName, viewerConfig.valueFormat);
+$(function ($) {
+	const windowURL = window.URL || window.webkitURL;
+	const exifUtil = new ExifUtil(viewerConfig.FieldName, viewerConfig.valueFormat);
 
 	if( ! window.FileReader) {
 		window.alert("File API がサポートされていません。");

@@ -80,7 +80,7 @@ var _exif_util2 = _interopRequireDefault(_exif_util);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-$(function () {
+$(function ($) {
 	var windowURL = window.URL || window.webkitURL;
 	var exifUtil = new _exif_util2.default(_config2.default.FieldName, _config2.default.valueFormat);
 
