@@ -90,6 +90,11 @@ $(function () {
     return false;
   }
 
+  var $overlay = $('.overlay');
+  var $dropArea = $('.dropArea');
+  var $exifInfo = $('.exifInfo');
+  var $previewArea = $('.previewArea');
+
   var cancelEvent = function cancelEvent(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -118,10 +123,10 @@ $(function () {
       }
 
       var $table = $('<table>');
-      exif.keys().forEach(function (key) {
+      Object.keys(exif).forEach(function (key) {
         var $tr = $('<tr>');
         $tr.append($('<td>').addClass('exifHeader').text(exifUtil.getFieldNameLabel(key)));
-        $tr.append($('<td>').addClass('exifValue').text(exifUtil.getExifValueLabel(key, exif[key])));
+        $tr.append($('<td>').addClass('exif_value').text(exifUtil.getExifValueLabel(key, exif[key])));
         $table.append($tr);
       });
       $infoBox.empty().append($table);
@@ -138,26 +143,26 @@ $(function () {
   };
 
   $('body').bind('dragenter', function (event) {
-    $('#dropArea').addClass('dropping');
-    $('#overlay').show();
+    $dropArea.addClass('dropping');
+    $overlay.show();
     return cancelEvent(event);
   }).bind('dragover', cancelEvent).bind('drop', function (event) {
-    $('#exifInfo').empty();
-    $('#previewArea').empty();
+    $exifInfo.empty();
+    $previewArea.empty();
 
-    $('#dropArea').removeClass('dropping');
-    $('#overlay').hide();
+    $dropArea.removeClass('dropping');
+    $overlay.hide();
     return cancelEvent(event);
   });
 
-  $('#dropArea').bind('drop', function (event) {
+  $dropArea.bind('drop', function (event) {
     // ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
     var file = event.originalEvent.dataTransfer.files[0];
 
-    analyzeExif(file, $('#exifInfo'), $('#previewArea'));
+    analyzeExif(file, $exifInfo, $previewArea);
 
-    $('#dropArea').removeClass('dropping');
-    $('#overlay').hide();
+    $dropArea.removeClass('dropping');
+    $overlay.hide();
     return cancelEvent(event);
   });
 

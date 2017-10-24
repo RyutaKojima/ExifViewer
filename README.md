@@ -13,8 +13,11 @@ https://ryutakojima.github.io/ExifViewer/
 
 ## Build
 
-- Lint check  
-`npm run lint`
+- ESLint  
+`npm run eslint`
+
+- SassLint
+`npm run sasslint`
 
 - **デバッグ用ビルド**  
 `npm run webpack`
