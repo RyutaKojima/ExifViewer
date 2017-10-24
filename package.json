@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint -c airbnb src/es2015/main.js",
+    "lint": "eslint -c airbnb src/es2015/*.js",
     "sass": "node-sass --output-style expanded --source-map-contents --source-map-embed src/sass -o docs/css/",
     "babel": "babel src/es2015 --presets babel-preset-es2015 --out-dir docs/js",
     "babel-watch": "babel --watch src/es2015 --presets babel-preset-es2015 --out-dir docs/js",

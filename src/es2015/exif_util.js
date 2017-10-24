@@ -1,42 +1,41 @@
-"use strict";
+export default class ExifUtil {
+  constructor(configFieldName, configValueFormat) {
+    this.FieldName = configFieldName;
+    this.ValueFormat = configValueFormat;
+  }
 
-export default class ExifUtil
-{
-	constructor(configFieldName, configValueFormat) {
-		this.FieldName   = configFieldName;
-		this.ValueFormat = configValueFormat;
-	}
+  static isSupport(mimeType) {
+    const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
+    return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
+  }
 
-	static isSupport(mimeType) {
-		const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
-		return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
-	}
+  getFieldNameLabel(key) {
+    return (key in this.FieldName) ? this.FieldName[key] : key;
+  }
 
-	getFieldNameLabel(key) {
-		return this.FieldName.hasOwnProperty(key) ? this.FieldName[key] : key;
-	}
+  getExifValueLabel(key, value) {
+    if (!(key in this.ValueFormat)) {
+      return value;
+    }
 
-	getExifValueLabel(key, value) {
-		if ( ! this.ValueFormat.hasOwnProperty(key)) {
-			return value;
-		}
+    let label = value;
+    const fomatType = this.ValueFormat[key].type;
+    const fomatLabel = this.ValueFormat[key].label;
+    switch (fomatType) {
+      case 'replace':
+        if (label in fomatLabel) {
+          label = fomatLabel[label.toString()];
+        }
+        break;
+      case 'prefix':
+        label = fomatLabel + label;
+        break;
+      case 'suffix':
+        label += fomatLabel;
+        break;
+      default: break;
+    }
 
-		let fomatType = this.ValueFormat[key].type;
-		let fomatLabel = this.ValueFormat[key].label;
-		switch (fomatType) {
-			case "replace":
-				if (fomatLabel.hasOwnProperty(value)) {
-					value = fomatLabel[value];
-				}
-				break;
-			case "prefix":
-				value = fomatLabel + value;
-				break;
-			case "suffix":
-				value += fomatLabel;
-				break;
-		}
-
-		return value;
-	}
+    return label;
+  }
 }
