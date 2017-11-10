@@ -38,8 +38,8 @@ $(() => {
       return;
     }
 
-    EXIF.getData(file, function () {
-      const exif = EXIF.getAllTags(this);
+    EXIF.getData(file, () => {
+      const exif = EXIF.getAllTags(file);
       if (Object.keys(exif).length === 0) {
         $infoBox.text('Exif情報がありません。');
         return;
@@ -56,13 +56,15 @@ $(() => {
     });
 
     const img = new Image();
+    const loadListener = (event) => {
+      windowURL.revokeObjectURL(event.target.src);
+      event.target.removeEventListener(event.type, loadListener);
+    };
     img.alt = file.name;
     img.title = file.name;
     img.src = windowURL.createObjectURL(file);
-    img.onload = function () {
-      windowURL.revokeObjectURL(this.src);
-      $imageBox.append(this);
-    };
+    img.addEventListener('load', loadListener);
+    $imageBox.append(img);
   };
 
   $('body')

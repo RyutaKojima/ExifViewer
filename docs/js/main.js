@@ -88,6 +88,8 @@ var _exifJs2 = _interopRequireDefault(_exifJs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+window.xxx = 0;
+
 /* global $, window, EXIF, Image */
 (0, _jquery2.default)(function () {
   var windowURL = window.URL || window.webkitURL;
@@ -124,7 +126,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     }
 
     _exifJs2.default.getData(file, function () {
-      var exif = _exifJs2.default.getAllTags(this);
+      var exif = _exifJs2.default.getAllTags(file);
       if (Object.keys(exif).length === 0) {
         $infoBox.text('Exif情報がありません。');
         return;
@@ -141,13 +143,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     });
 
     var img = new Image();
+    var loadListener = function loadListener(event) {
+      windowURL.revokeObjectURL(event.target.src);
+      event.target.removeEventListener(event.type, loadListener);
+    };
     img.alt = file.name;
     img.title = file.name;
     img.src = windowURL.createObjectURL(file);
-    img.onload = function () {
-      windowURL.revokeObjectURL(this.src);
-      $imageBox.append(this);
-    };
+    img.addEventListener('load', loadListener);
+    $imageBox.append(img);
   };
 
   (0, _jquery2.default)('body').bind('dragenter', function (event) {
