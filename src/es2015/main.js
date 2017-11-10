@@ -1,5 +1,7 @@
 import viewerConfig from './config';
 import ExifUtil from './exif_util';
+import $ from "jquery";
+import EXIF from "exif-js";
 
 /* global $, window, EXIF, Image */
 $(() => {
