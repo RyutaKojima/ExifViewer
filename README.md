@@ -8,7 +8,7 @@ https://ryutakojima.github.io/ExifViewer/
 1. clone git repo  
   `git clone git@github.com/USERNAME/ExifViewer.git`
 
-2. package install
+2. package install  
   `npm install`
 
 ## Build
@@ -16,7 +16,7 @@ https://ryutakojima.github.io/ExifViewer/
 - ESLint  
 `npm run eslint`
 
-- SassLint
+- SassLint  
 `npm run sasslint`
 
 - **デバッグ用ビルド**  
