@@ -1,9 +1,9 @@
+import $ from 'jquery';
+import EXIF from 'exif-js';
 import viewerConfig from './config';
 import ExifUtil from './exif_util';
-import $ from "jquery";
-import EXIF from "exif-js";
 
-/* global $, window, EXIF, Image */
+/* global window, Image */
 $(() => {
   const windowURL = window.URL || window.webkitURL;
   const exifUtil = new ExifUtil(viewerConfig.FieldName, viewerConfig.valueFormat);

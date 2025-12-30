@@ -1,1 +1,68 @@
-.overlay{display:none;position:fixed;top:0;left:0;opacity:.6;background:#000;width:100%;height:100%}.dropArea,.dropDescription{border-radius:11px;background:#eee;text-align:center;line-height:200px;color:#aaa;font-size:300%;-webkit-border-radius:11px;-moz-border-radius:11px}.dropArea{display:none;position:fixed;z-index:10;margin:0;width:95%;height:95%}.dropArea.dropping{display:block}.dropDescription{display:block;width:100%;height:20%}.exifInfo{float:left;width:50%;height:100%;overflow:scroll}.exifInfo tr:nth-of-type(odd){background-color:#f8f8ff}.exifHeader{width:20em;font-weight:700}.previewArea{float:left;width:50%}.previewArea img{max-width:100%;max-height:100%}
+/*!********************************************************************************************************************************************************************!*\
+  !*** css ../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./main.scss ***!
+  \********************************************************************************************************************************************************************/
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.6;
+  background: #000;
+  width: 100%;
+  height: 100%;
+}
+
+.dropDescription, .dropArea {
+  border-radius: 11px;
+  background: #eee;
+  text-align: center;
+  line-height: 200px;
+  color: #aaa;
+  font-size: 300%;
+  -webkit-border-radius: 11px;
+  -moz-border-radius: 11px;
+}
+
+.dropArea {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  margin: 0;
+  width: 95%;
+  height: 95%;
+}
+.dropArea.dropping {
+  display: block;
+}
+
+.dropDescription {
+  display: block;
+  width: 100%;
+  height: 20%;
+}
+
+.exifInfo {
+  float: left;
+  width: 50%;
+  height: 100%;
+  overflow: scroll;
+}
+.exifInfo tr:nth-of-type(odd) {
+  background-color: ghostwhite;
+}
+
+.exifHeader {
+  width: 20em;
+  font-weight: bold;
+}
+
+.previewArea {
+  float: left;
+  width: 50%;
+}
+.previewArea img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi5jc3MiLCJtYXBwaW5ncyI6Ijs7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0EsZ0JBUk07RUFTTjtFQUNBO0FBREY7O0FBSUE7RUFFRSxtQkFEb0I7RUFFcEI7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUVBLDJCQVJvQjtFQVNwQix3QkFUb0I7QUFNdEI7O0FBTUE7RUFFRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7QUFKRjtBQU1FO0VBQ0U7QUFKSjs7QUFTQTtFQUVFO0VBQ0E7RUFDQTtBQVBGOztBQVVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7QUFQRjtBQVVJO0VBQ0U7QUFSTjs7QUFhQTtFQUNFO0VBQ0E7QUFWRjs7QUFhQTtFQUNFO0VBQ0E7QUFWRjtBQVlFO0VBQ0U7RUFDQTtBQVZKLEMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9tYWluLnNjc3MiXSwic291cmNlc0NvbnRlbnQiOlsiJGJsYWNrOiAjMDAwO1xuXG4ub3ZlcmxheSB7XG4gIGRpc3BsYXk6IG5vbmU7XG4gIHBvc2l0aW9uOiBmaXhlZDtcbiAgdG9wOiAwO1xuICBsZWZ0OiAwO1xuICBvcGFjaXR5OiAuNjtcbiAgYmFja2dyb3VuZDogJGJsYWNrO1xuICB3aWR0aDogMTAwJTtcbiAgaGVpZ2h0OiAxMDAlO1xufVxuXG4lZHJvcC1pbi1iYXNlIHtcbiAgJGJvcmRlci1yYWRpdXMtdmFsOiAxMXB4O1xuICBib3JkZXItcmFkaXVzOiAkYm9yZGVyLXJhZGl1cy12YWw7XG4gIGJhY2tncm91bmQ6ICNlZWU7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgbGluZS1oZWlnaHQ6IDIwMHB4O1xuICBjb2xvcjogI2FhYTtcbiAgZm9udC1zaXplOiAzMDAlO1xuXG4gIC13ZWJraXQtYm9yZGVyLXJhZGl1czogJGJvcmRlci1yYWRpdXMtdmFsO1xuICAtbW96LWJvcmRlci1yYWRpdXM6ICRib3JkZXItcmFkaXVzLXZhbDtcbn1cblxuLmRyb3BBcmVhIHtcbiAgQGV4dGVuZCAlZHJvcC1pbi1iYXNlO1xuICBkaXNwbGF5OiBub25lO1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIHotaW5kZXg6IDEwO1xuICBtYXJnaW46IDA7XG4gIHdpZHRoOiA5NSU7XG4gIGhlaWdodDogOTUlO1xuXG4gICYuZHJvcHBpbmcge1xuICAgIGRpc3BsYXk6IGJsb2NrO1xuICB9XG59XG5cblxuLmRyb3BEZXNjcmlwdGlvbiB7XG4gIEBleHRlbmQgJWRyb3AtaW4tYmFzZTtcbiAgZGlzcGxheTogYmxvY2s7XG4gIHdpZHRoOiAxMDAlO1xuICBoZWlnaHQ6IDIwJTtcbn1cblxuLmV4aWZJbmZvIHtcbiAgZmxvYXQ6IGxlZnQ7XG4gIHdpZHRoOiA1MCU7XG4gIGhlaWdodDogMTAwJTtcbiAgb3ZlcmZsb3c6IHNjcm9sbDtcblxuICB0ciB7XG4gICAgJjpudGgtb2YtdHlwZShvZGQpIHtcbiAgICAgIGJhY2tncm91bmQtY29sb3I6IGdob3N0d2hpdGU7XG4gICAgfVxuICB9XG59XG5cbi5leGlmSGVhZGVyIHtcbiAgd2lkdGg6IDIwZW07XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xufVxuXG4ucHJldmlld0FyZWEge1xuICBmbG9hdDogbGVmdDtcbiAgd2lkdGg6IDUwJTtcblxuICBpbWcge1xuICAgIG1heC13aWR0aDogMTAwJTtcbiAgICBtYXgtaGVpZ2h0OiAxMDAlO1xuICB9XG59XG4iXSwibmFtZXMiOltdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlUm9vdCI6IiJ9*/
