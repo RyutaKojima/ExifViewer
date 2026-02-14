@@ -40,13 +40,14 @@ $(() => {
 
     EXIF.getData(file, () => {
       const exif = EXIF.getAllTags(file);
-      if (Object.keys(exif).length === 0) {
+      const keys = Object.keys(exif);
+      if (keys.length === 0) {
         $infoBox.text('Exif情報がありません。');
         return;
       }
 
       const $table = $('<table>');
-      Object.keys(exif).forEach((key) => {
+      keys.forEach((key) => {
         const $tr = $('<tr>');
         $tr.append($('<td>').addClass('exifHeader').text(exifUtil.getFieldNameLabel(key)));
         $tr.append($('<td>').addClass('exif_value').text(exifUtil.getExifValueLabel(key, exif[key])));
