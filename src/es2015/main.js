@@ -69,13 +69,13 @@ $(() => {
   };
 
   $('body')
-    .bind('dragenter', (event) => {
+    .on('dragenter', (event) => {
       $dropArea.addClass('dropping');
       $overlay.show();
       return cancelEvent(event);
     })
-    .bind('dragover', cancelEvent)
-    .bind('drop', (event) => {
+    .on('dragover', cancelEvent)
+    .on('drop', (event) => {
       $exifInfo.empty();
       $previewArea.empty();
 
@@ -85,7 +85,7 @@ $(() => {
     });
 
   $dropArea
-    .bind('drop', (event) => {
+    .on('drop', (event) => {
       // ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
       const file = event.originalEvent.dataTransfer.files[0];
 
