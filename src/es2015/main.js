@@ -46,14 +46,23 @@ $(() => {
         return;
       }
 
-      const $table = $('<table>');
+      const table = document.createElement('table');
       keys.forEach((key) => {
-        const $tr = $('<tr>');
-        $tr.append($('<td>').addClass('exifHeader').text(exifUtil.getFieldNameLabel(key)));
-        $tr.append($('<td>').addClass('exif_value').text(exifUtil.getExifValueLabel(key, exif[key])));
-        $table.append($tr);
+        const tr = document.createElement('tr');
+        const tdHeader = document.createElement('td');
+        const tdValue = document.createElement('td');
+
+        tdHeader.className = 'exifHeader';
+        tdHeader.textContent = exifUtil.getFieldNameLabel(key);
+
+        tdValue.className = 'exif_value';
+        tdValue.textContent = exifUtil.getExifValueLabel(key, exif[key]);
+
+        tr.appendChild(tdHeader);
+        tr.appendChild(tdValue);
+        table.appendChild(tr);
       });
-      $infoBox.empty().append($table);
+      $infoBox.empty().append(table);
     });
 
     const img = new Image();
