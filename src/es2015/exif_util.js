@@ -1,3 +1,5 @@
+const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
+
 export default class ExifUtil {
   constructor(configFieldName, configValueFormat) {
     this.FieldName = configFieldName;
@@ -5,7 +7,6 @@ export default class ExifUtil {
   }
 
   static isSupport(mimeType) {
-    const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
     return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
   }
 
