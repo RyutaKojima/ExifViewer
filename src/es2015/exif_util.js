@@ -20,19 +20,20 @@ export default class ExifUtil {
     }
 
     let label = value;
-    const fomatType = this.ValueFormat[key].type;
-    const fomatLabel = this.ValueFormat[key].label;
-    switch (fomatType) {
+    const format = this.ValueFormat[key];
+    const formatType = format.type;
+    const formatLabel = format.label;
+    switch (formatType) {
       case 'replace':
-        if (label in fomatLabel) {
-          label = fomatLabel[label.toString()];
+        if (label in formatLabel) {
+          label = formatLabel[label.toString()];
         }
         break;
       case 'prefix':
-        label = fomatLabel + label;
+        label = formatLabel + label;
         break;
       case 'suffix':
-        label += fomatLabel;
+        label += formatLabel;
         break;
       default: break;
     }
