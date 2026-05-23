@@ -3,7 +3,18 @@ import EXIF from 'exif-js';
 import viewerConfig from './config';
 import ExifUtil from './exif_util';
 
-/* global window, Image */
+/* global window, document, Image */
+
+const escapeHTML = (str) => {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+
 $(() => {
   const windowURL = window.URL || window.webkitURL;
   const exifUtil = new ExifUtil(viewerConfig.FieldName, viewerConfig.valueFormat);
@@ -47,21 +58,11 @@ $(() => {
       }
 
       const table = document.createElement('table');
-      keys.forEach((key) => {
-        const tr = document.createElement('tr');
-        const tdHeader = document.createElement('td');
-        const tdValue = document.createElement('td');
-
-        tdHeader.className = 'exifHeader';
-        tdHeader.textContent = exifUtil.getFieldNameLabel(key);
-
-        tdValue.className = 'exif_value';
-        tdValue.textContent = exifUtil.getExifValueLabel(key, exif[key]);
-
-        tr.appendChild(tdHeader);
-        tr.appendChild(tdValue);
-        table.appendChild(tr);
-      });
+      table.innerHTML = keys.map((key) => {
+        const header = escapeHTML(exifUtil.getFieldNameLabel(key));
+        const value = escapeHTML(exifUtil.getExifValueLabel(key, exif[key]));
+        return `<tr><td class="exifHeader">${header}</td><td class="exif_value">${value}</td></tr>`;
+      }).join('');
       $infoBox.empty().append(table);
     });
 
