@@ -15,20 +15,22 @@ export default class ExifUtil {
   }
 
   getExifValueLabel(key, value) {
-    if (!(key in this.ValueFormat)) {
+    const format = this.ValueFormat[key];
+    if (format === undefined) {
       return value;
     }
 
     let label = value;
-    const format = this.ValueFormat[key];
     const formatType = format.type;
     const formatLabel = format.label;
     switch (formatType) {
-      case 'replace':
-        if (label in formatLabel) {
-          label = formatLabel[label.toString()];
+      case 'replace': {
+        const replaced = formatLabel[label];
+        if (replaced !== undefined) {
+          label = replaced;
         }
         break;
+      }
       case 'prefix':
         label = formatLabel + label;
         break;
