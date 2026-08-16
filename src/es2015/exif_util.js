@@ -11,8 +11,8 @@ export default class ExifUtil {
   }
 
   getFieldNameLabel(key) {
-    const fieldName = this.FieldName[key];
-    return (fieldName !== undefined) ? fieldName : key;
+    const fieldNameLabel = this.FieldName[key];
+    return (fieldNameLabel !== undefined) ? fieldNameLabel : key;
   }
 
   getExifValueLabel(key, value) {
