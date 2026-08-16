@@ -5,14 +5,24 @@ import ExifUtil from './exif_util';
 
 /* global window, document, Image */
 
+const HTML_ESCAPE_MAP = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+const MATCH_HTML = /[&<>"']/;
+
+// Fast-path return unmodified string if no HTML special characters are found,
+// avoiding 5 sequential regex replacements and intermediate string allocations.
 const escapeHTML = (str) => {
   if (str == null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+  const s = String(str);
+  if (!MATCH_HTML.test(s)) {
+    return s;
+  }
+  return s.replace(/[&<>"']/g, (m) => HTML_ESCAPE_MAP[m]);
 };
 
 $(() => {

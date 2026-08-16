@@ -21,26 +21,22 @@ export default class ExifUtil {
       return value;
     }
 
-    let label = value;
     const formatType = format.type;
     const formatLabel = format.label;
-    switch (formatType) {
-      case 'replace': {
-        const replacedLabel = formatLabel[label];
-        if (replacedLabel !== undefined) {
-          label = replacedLabel;
-        }
-        break;
-      }
-      case 'prefix':
-        label = formatLabel + label;
-        break;
-      case 'suffix':
-        label += formatLabel;
-        break;
-      default: break;
+
+    // Fast-path early returns to avoid unnecessary variable re-assignments
+    // and switch evaluation overhead
+    if (formatType === 'replace') {
+      const replacedLabel = formatLabel[value];
+      return (replacedLabel !== undefined) ? replacedLabel : value;
+    }
+    if (formatType === 'prefix') {
+      return formatLabel + value;
+    }
+    if (formatType === 'suffix') {
+      return value + formatLabel;
     }
 
-    return label;
+    return value;
   }
 }
