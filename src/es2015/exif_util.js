@@ -11,24 +11,27 @@ export default class ExifUtil {
   }
 
   getFieldNameLabel(key) {
-    return (key in this.FieldName) ? this.FieldName[key] : key;
+    const label = this.FieldName[key];
+    return (label !== undefined) ? label : key;
   }
 
   getExifValueLabel(key, value) {
-    if (!(key in this.ValueFormat)) {
+    const format = this.ValueFormat[key];
+    if (format === undefined) {
       return value;
     }
 
     let label = value;
-    const format = this.ValueFormat[key];
     const formatType = format.type;
     const formatLabel = format.label;
     switch (formatType) {
-      case 'replace':
-        if (label in formatLabel) {
-          label = formatLabel[label.toString()];
+      case 'replace': {
+        const replacedLabel = formatLabel[label.toString()];
+        if (replacedLabel !== undefined) {
+          label = replacedLabel;
         }
         break;
+      }
       case 'prefix':
         label = formatLabel + label;
         break;

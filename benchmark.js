@@ -14,7 +14,9 @@ const config = {
       label: 'mm',
     },
   },
-  FieldName: {}
+  FieldName: {
+    ImageWidth: '画像の幅',
+  }
 };
 
 const exifUtil = new ExifUtil(config.FieldName, config.valueFormat);
@@ -23,6 +25,8 @@ const iterations = 10000000;
 const start = performance.now();
 
 for (let i = 0; i < iterations; i++) {
+  exifUtil.getFieldNameLabel('ImageWidth');
+  exifUtil.getFieldNameLabel('Unknown');
   exifUtil.getExifValueLabel('Orientation', 1);
   exifUtil.getExifValueLabel('FocalLength', 50);
   exifUtil.getExifValueLabel('Unknown', 100);
