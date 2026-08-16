@@ -1,6 +1,13 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import ExifUtil from '../src/es2015/exif_util.js';
+const test = require('node:test');
+const assert = require('node:assert/strict');
+
+// Babel / @babel/register or dynamic import to load src/es2015/exif_util.js (which uses ES module syntax)
+let ExifUtil;
+
+test.before(async () => {
+  const module = await import('../src/es2015/exif_util.js');
+  ExifUtil = module.default;
+});
 
 test('ExifUtil.isSupport should identify supported MIME types correctly', () => {
   assert.equal(ExifUtil.isSupport('image/jpeg'), true);
