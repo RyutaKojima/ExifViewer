@@ -11,8 +11,8 @@ export default class ExifUtil {
   }
 
   getFieldNameLabel(key) {
-    const label = this.FieldName[key];
-    return (label !== undefined) ? label : key;
+    const fieldNameLabel = this.FieldName[key];
+    return (fieldNameLabel !== undefined) ? fieldNameLabel : key;
   }
 
   getExifValueLabel(key, value) {
@@ -26,9 +26,9 @@ export default class ExifUtil {
     const formatLabel = format.label;
     switch (formatType) {
       case 'replace': {
-        const replaced = formatLabel[label];
-        if (replaced !== undefined) {
-          label = replaced;
+        const replacedLabel = formatLabel[label];
+        if (replacedLabel !== undefined) {
+          label = replacedLabel;
         }
         break;
       }
