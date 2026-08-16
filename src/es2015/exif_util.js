@@ -25,11 +25,13 @@ export default class ExifUtil {
     const formatType = format.type;
     const formatLabel = format.label;
     switch (formatType) {
-      case 'replace':
-        if (formatLabel[label] !== undefined) {
-          label = formatLabel[label.toString()];
+      case 'replace': {
+        const replaced = formatLabel[label];
+        if (replaced !== undefined) {
+          label = replaced;
         }
         break;
+      }
       case 'prefix':
         label = formatLabel + label;
         break;
