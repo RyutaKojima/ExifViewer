@@ -60,3 +60,19 @@ test('ExifUtil.getExifValueLabel should format values according to valueFormat c
   assert.equal(exifUtil.getExifValueLabel('Default', 'test'), 'test');
   assert.equal(exifUtil.getExifValueLabel('UnconfiguredKey', 123), 123);
 });
+
+test('ExifUtil should handle null or undefined configs gracefully', () => {
+  const emptyUtil = new ExifUtil(null, null);
+  assert.equal(emptyUtil.getFieldNameLabel('Make'), 'Make');
+  assert.equal(emptyUtil.getExifValueLabel('Orientation', 1), 1);
+
+  const missingLabelUtil = new ExifUtil({}, {
+    MissingLabelReplace: { type: 'replace', label: null },
+    MissingLabelPrefix: { type: 'prefix', label: null },
+    MissingLabelSuffix: { type: 'suffix', label: null },
+  });
+
+  assert.equal(missingLabelUtil.getExifValueLabel('MissingLabelReplace', 123), 123);
+  assert.equal(missingLabelUtil.getExifValueLabel('MissingLabelPrefix', 123), '123');
+  assert.equal(missingLabelUtil.getExifValueLabel('MissingLabelSuffix', 123), '123');
+});
