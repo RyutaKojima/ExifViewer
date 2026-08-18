@@ -1,5 +1,7 @@
 const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
 
+const isObject = (obj) => typeof obj === 'object' && obj !== null;
+
 export default class ExifUtil {
   constructor(configFieldName, configValueFormat) {
     this.FieldName = configFieldName;
@@ -11,19 +13,19 @@ export default class ExifUtil {
   }
 
   getFieldNameLabel(key) {
-    const hasProp = Boolean(this.FieldName)
+    const hasProp = isObject(this.FieldName)
       && Object.prototype.hasOwnProperty.call(this.FieldName, key);
     return hasProp ? this.FieldName[key] : key;
   }
 
   getExifValueLabel(key, value) {
-    const hasFormat = Boolean(this.ValueFormat)
+    const hasFormat = isObject(this.ValueFormat)
       && Object.prototype.hasOwnProperty.call(this.ValueFormat, key);
     if (!hasFormat) {
       return value;
     }
     const format = this.ValueFormat[key];
-    if (!format) {
+    if (!isObject(format)) {
       return value;
     }
 
@@ -33,7 +35,7 @@ export default class ExifUtil {
     // Fast-path early returns to avoid unnecessary variable re-assignments
     // and switch evaluation overhead
     if (formatType === 'replace') {
-      const hasReplaced = Boolean(formatLabel)
+      const hasReplaced = isObject(formatLabel)
         && Object.prototype.hasOwnProperty.call(formatLabel, value);
       return hasReplaced ? formatLabel[value] : value;
     }
