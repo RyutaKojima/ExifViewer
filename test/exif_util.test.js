@@ -76,3 +76,14 @@ test('ExifUtil should handle null or undefined configs gracefully', () => {
   assert.equal(missingLabelUtil.getExifValueLabel('MissingLabelPrefix', 123), '123');
   assert.equal(missingLabelUtil.getExifValueLabel('MissingLabelSuffix', 123), '123');
 });
+
+test('ExifUtil should safely handle primitive or invalid non-object configs without property leakage', () => {
+  const primitiveUtil = new ExifUtil('primitive_string', 'primitive_string');
+  assert.equal(primitiveUtil.getFieldNameLabel('length'), 'length');
+  assert.equal(primitiveUtil.getExifValueLabel('length', 100), 100);
+
+  const invalidReplaceUtil = new ExifUtil({}, {
+    InvalidReplace: { type: 'replace', label: 'string_label' },
+  });
+  assert.equal(invalidReplaceUtil.getExifValueLabel('InvalidReplace', 'length'), 'length');
+});
