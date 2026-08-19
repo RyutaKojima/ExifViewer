@@ -59,22 +59,36 @@ $(() => {
       return;
     }
 
-    EXIF.getData(file, () => {
-      const exif = EXIF.getAllTags(file);
-      const keys = Object.keys(exif);
-      if (keys.length === 0) {
-        $infoBox.text('Exif情報がありません。');
-        return;
-      }
+    try {
+      // EXIF.getData 自体の同期的な呼び出しエラーをキャッチ
+      EXIF.getData(file, () => {
+        try {
+          // 非同期コールバック内で EXIF タグ解析時の例外をキャッチ
+          const exif = EXIF.getAllTags(file);
+          if (!exif) {
+            $infoBox.text('Exif情報がありません。');
+            return;
+          }
+          const keys = Object.keys(exif);
+          if (keys.length === 0) {
+            $infoBox.text('Exif情報がありません。');
+            return;
+          }
 
-      const table = document.createElement('table');
-      table.innerHTML = keys.map((key) => {
-        const header = escapeHTML(exifUtil.getFieldNameLabel(key));
-        const value = escapeHTML(exifUtil.getExifValueLabel(key, exif[key]));
-        return `<tr><td class="exifHeader">${header}</td><td class="exif_value">${value}</td></tr>`;
-      }).join('');
-      $infoBox.empty().append(table);
-    });
+          const table = document.createElement('table');
+          table.innerHTML = keys.map((key) => {
+            const header = escapeHTML(exifUtil.getFieldNameLabel(key));
+            const value = escapeHTML(exifUtil.getExifValueLabel(key, exif[key]));
+            return `<tr><td class="exifHeader">${header}</td><td class="exif_value">${value}</td></tr>`;
+          }).join('');
+          $infoBox.empty().append(table);
+        } catch (error) {
+          $infoBox.text('Exif情報の解析に失敗しました。');
+        }
+      });
+    } catch (error) {
+      $infoBox.text('Exif情報の解析に失敗しました。');
+    }
 
     const img = new Image();
     const loadListener = (event) => {
