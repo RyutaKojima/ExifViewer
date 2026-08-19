@@ -60,8 +60,10 @@ $(() => {
     }
 
     try {
+      // EXIF.getData 自体の同期的な呼び出しエラーをキャッチ
       EXIF.getData(file, () => {
         try {
+          // 非同期コールバック内で EXIF タグ解析時の例外をキャッチ
           const exif = EXIF.getAllTags(file);
           if (!exif) {
             $infoBox.text('Exif情報がありません。');
