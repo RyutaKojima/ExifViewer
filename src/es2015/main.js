@@ -91,14 +91,16 @@ $(() => {
     }
 
     const img = new Image();
-    const loadListener = (event) => {
+    const cleanup = (event) => {
       windowURL.revokeObjectURL(event.target.src);
-      event.target.removeEventListener(event.type, loadListener);
+      event.target.removeEventListener('load', cleanup);
+      event.target.removeEventListener('error', cleanup);
     };
     img.alt = file.name;
     img.title = file.name;
     img.src = windowURL.createObjectURL(file);
-    img.addEventListener('load', loadListener);
+    img.addEventListener('load', cleanup);
+    img.addEventListener('error', cleanup);
     $imageBox.append(img);
   };
 
