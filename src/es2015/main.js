@@ -5,26 +5,6 @@ import ExifUtil from './exif_util';
 
 /* global window, document, Image */
 
-const HTML_ESCAPE_MAP = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-};
-const MATCH_HTML = /[&<>"']/;
-
-// Fast-path return unmodified string if no HTML special characters are found,
-// avoiding 5 sequential regex replacements and intermediate string allocations.
-const escapeHTML = (str) => {
-  if (str == null) return '';
-  const s = String(str);
-  if (!MATCH_HTML.test(s)) {
-    return s;
-  }
-  return s.replace(/[&<>"']/g, (m) => HTML_ESCAPE_MAP[m]);
-};
-
 $(() => {
   const windowURL = window.URL || window.webkitURL;
   const exifUtil = new ExifUtil(viewerConfig.FieldName, viewerConfig.valueFormat);
@@ -76,11 +56,24 @@ $(() => {
           }
 
           const table = document.createElement('table');
-          table.innerHTML = keys.map((key) => {
-            const header = escapeHTML(exifUtil.getFieldNameLabel(key));
-            const value = escapeHTML(exifUtil.getExifValueLabel(key, exif[key]));
-            return `<tr><td class="exifHeader">${header}</td><td class="exif_value">${value}</td></tr>`;
-          }).join('');
+          const fragment = document.createDocumentFragment();
+          keys.forEach((key) => {
+            const tr = document.createElement('tr');
+
+            const tdHeader = document.createElement('td');
+            tdHeader.className = 'exifHeader';
+            tdHeader.textContent = String(exifUtil.getFieldNameLabel(key));
+
+            const tdValue = document.createElement('td');
+            tdValue.className = 'exif_value';
+            const valLabel = exifUtil.getExifValueLabel(key, exif[key]);
+            tdValue.textContent = valLabel == null ? '' : String(valLabel);
+
+            tr.appendChild(tdHeader);
+            tr.appendChild(tdValue);
+            fragment.appendChild(tr);
+          });
+          table.appendChild(fragment);
           $infoBox.empty().append(table);
         } catch (error) {
           $infoBox.text('Exif情報の解析に失敗しました。');
