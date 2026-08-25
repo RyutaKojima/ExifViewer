@@ -87,3 +87,22 @@ test('ExifUtil should safely handle primitive or invalid non-object configs with
   });
   assert.equal(invalidReplaceUtil.getExifValueLabel('InvalidReplace', 'length'), 'length');
 });
+
+test('ExifUtil should safely process EXIF keys and values containing HTML special characters', () => {
+  const fieldNameConfig = {
+    '<script>alert(1)</script>': '<b> Malicious </b>',
+  };
+  const valueFormatConfig = {
+    '<script>alert(1)</script>': {
+      type: 'suffix',
+      label: ' <img src=x onerror=alert(1)>',
+    },
+  };
+  const exifUtil = new ExifUtil(fieldNameConfig, valueFormatConfig);
+
+  const fieldLabel = exifUtil.getFieldNameLabel('<script>alert(1)</script>');
+  assert.equal(fieldLabel, '<b> Malicious </b>');
+
+  const valueLabel = exifUtil.getExifValueLabel('<script>alert(1)</script>', '<payload>');
+  assert.equal(valueLabel, '<payload> <img src=x onerror=alert(1)>');
+});
