@@ -7,6 +7,9 @@ test('ExifUtil.isSupport should identify supported MIME types correctly', () => 
   assert.equal(ExifUtil.isSupport('image/tiff'), true);
   assert.equal(ExifUtil.isSupport('image/png'), false);
   assert.equal(ExifUtil.isSupport('application/json'), false);
+  assert.equal(ExifUtil.isSupport(null), false);
+  assert.equal(ExifUtil.isSupport(undefined), false);
+  assert.equal(ExifUtil.isSupport(123), false);
 });
 
 test('ExifUtil.getFieldNameLabel should return custom label or default key', () => {

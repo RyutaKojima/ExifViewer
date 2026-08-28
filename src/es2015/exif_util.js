@@ -9,6 +9,9 @@ export default class ExifUtil {
   }
 
   static isSupport(mimeType) {
+    if (typeof mimeType !== 'string') {
+      return false;
+    }
     return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
   }
 
