@@ -4,7 +4,11 @@ import ExifUtil from '../src/es2015/exif_util.js';
 
 test('ExifUtil.isSupport should identify supported MIME types correctly', () => {
   assert.equal(ExifUtil.isSupport('image/jpeg'), true);
+  assert.equal(ExifUtil.isSupport('IMAGE/JPEG'), true);
+  assert.equal(ExifUtil.isSupport(' image/jpeg '), true);
+  assert.equal(ExifUtil.isSupport('image/jpeg; charset=utf-8'), true);
   assert.equal(ExifUtil.isSupport('image/tiff'), true);
+  assert.equal(ExifUtil.isSupport('Image/TIFF'), true);
   assert.equal(ExifUtil.isSupport('image/png'), false);
   assert.equal(ExifUtil.isSupport('application/json'), false);
   assert.equal(ExifUtil.isSupport(null), false);
