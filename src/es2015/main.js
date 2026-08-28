@@ -25,12 +25,19 @@ $(() => {
     return false;
   };
 
+  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB (DoS 対策としての最大ファイルサイズ上限)
+
   const analyzeExif = (file, $infoBox, $imageBox) => {
     $infoBox.text('解析中...');
     $imageBox.empty();
 
     if (!file) {
       $infoBox.text('ファイルが読み込めませんでした。');
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      $infoBox.text('ファイルサイズが大きすぎます。50MB以下のファイルを選択してください。');
       return;
     }
 
