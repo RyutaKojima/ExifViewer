@@ -12,7 +12,8 @@ export default class ExifUtil {
     if (typeof mimeType !== 'string') {
       return false;
     }
-    return (SUPPORT_FILE_TYPE.indexOf(mimeType) !== -1);
+    const normalizedType = mimeType.trim().toLowerCase().split(';')[0];
+    return (SUPPORT_FILE_TYPE.indexOf(normalizedType) !== -1);
   }
 
   getFieldNameLabel(key) {
