@@ -17,12 +17,18 @@ export default class ExifUtil {
   }
 
   getFieldNameLabel(key) {
+    if (key == null) {
+      return key;
+    }
     const hasProp = isObject(this.FieldName)
       && Object.prototype.hasOwnProperty.call(this.FieldName, key);
     return hasProp ? this.FieldName[key] : key;
   }
 
   getExifValueLabel(key, value) {
+    if (key == null || value == null) {
+      return value;
+    }
     const hasFormat = isObject(this.ValueFormat)
       && Object.prototype.hasOwnProperty.call(this.ValueFormat, key);
     if (!hasFormat) {

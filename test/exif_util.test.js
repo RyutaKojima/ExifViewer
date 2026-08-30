@@ -94,3 +94,25 @@ test('ExifUtil should safely handle primitive or invalid non-object configs with
   });
   assert.equal(invalidReplaceUtil.getExifValueLabel('InvalidReplace', 'length'), 'length');
 });
+
+test('ExifUtil should gracefully handle null or undefined inputs for keys and values', () => {
+  const valueFormatConfig = {
+    FocalLength: {
+      type: 'suffix',
+      label: 'mm',
+    },
+    ISO: {
+      type: 'prefix',
+      label: 'ISO ',
+    },
+  };
+  const exifUtil = new ExifUtil({ Make: 'メーカー' }, valueFormatConfig);
+
+  assert.equal(exifUtil.getFieldNameLabel(null), null);
+  assert.equal(exifUtil.getFieldNameLabel(undefined), undefined);
+
+  assert.equal(exifUtil.getExifValueLabel('FocalLength', null), null);
+  assert.equal(exifUtil.getExifValueLabel('ISO', undefined), undefined);
+  assert.equal(exifUtil.getExifValueLabel(null, 50), 50);
+  assert.equal(exifUtil.getExifValueLabel(undefined, 50), 50);
+});
