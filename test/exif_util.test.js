@@ -2,6 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import ExifUtil from '../src/es2015/exif_util.js';
 
+test('ExifUtil.sanitizeFileName should sanitize file names containing control characters and handle non-strings', () => {
+  assert.equal(ExifUtil.sanitizeFileName('normal_photo.jpg'), 'normal_photo.jpg');
+  assert.equal(ExifUtil.sanitizeFileName('photo\u0000\u001F.jpg'), 'photo.jpg');
+  assert.equal(ExifUtil.sanitizeFileName('test\r\nname.jpg'), 'testname.jpg');
+  assert.equal(ExifUtil.sanitizeFileName('bad\u007Ffile.jpg'), 'badfile.jpg');
+  assert.equal(ExifUtil.sanitizeFileName(null), '');
+  assert.equal(ExifUtil.sanitizeFileName(undefined), '');
+  assert.equal(ExifUtil.sanitizeFileName(12345), '');
+});
+
 test('ExifUtil.isSupport should identify supported MIME types correctly', () => {
   assert.equal(ExifUtil.isSupport('image/jpeg'), true);
   assert.equal(ExifUtil.isSupport('IMAGE/JPEG'), true);

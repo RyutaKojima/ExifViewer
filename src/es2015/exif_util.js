@@ -16,6 +16,13 @@ export default class ExifUtil {
     return (SUPPORT_FILE_TYPE.indexOf(normalizedType) !== -1);
   }
 
+  static sanitizeFileName(name) {
+    if (typeof name !== 'string') {
+      return '';
+    }
+    return name.replace(/[\u0000-\u001F\u007F]/g, '');
+  }
+
   getFieldNameLabel(key) {
     if (key == null) {
       return key;
