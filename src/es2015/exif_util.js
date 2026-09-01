@@ -8,6 +8,13 @@ export default class ExifUtil {
     this.ValueFormat = configValueFormat;
   }
 
+  static sanitizeFileName(name) {
+    if (typeof name !== 'string') {
+      return '';
+    }
+    return name.replace(/[\u0000-\u001F\u007F]/g, '');
+  }
+
   static isSupport(mimeType) {
     if (typeof mimeType !== 'string') {
       return false;

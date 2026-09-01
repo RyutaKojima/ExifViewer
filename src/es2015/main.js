@@ -86,8 +86,9 @@ $(() => {
       event.target.removeEventListener('load', cleanup);
       event.target.removeEventListener('error', cleanup);
     };
-    img.alt = file.name;
-    img.title = file.name;
+    const safeFileName = ExifUtil.sanitizeFileName(file.name);
+    img.alt = safeFileName;
+    img.title = safeFileName;
     img.src = windowURL.createObjectURL(file);
     img.addEventListener('load', cleanup);
     img.addEventListener('error', cleanup);
