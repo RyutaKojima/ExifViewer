@@ -1,6 +1,7 @@
 const SUPPORT_FILE_TYPE = ['image/jpeg', 'image/tiff'];
 
-const isObject = (obj) => typeof obj === 'object' && obj !== null;
+// Ensure arrays are not treated as dictionary objects to prevent property leakage (e.g. 'length')
+const isObject = (obj) => typeof obj === 'object' && obj !== null && !Array.isArray(obj);
 
 export default class ExifUtil {
   constructor(configFieldName, configValueFormat) {
