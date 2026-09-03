@@ -21,7 +21,8 @@ export default class ExifUtil {
     if (typeof name !== 'string') {
       return '';
     }
-    return name.replace(/[\u0000-\u001F\u007F]/g, '');
+    // C0およびC1制御文字(\u0000-\u001F, \u007F-\u009F)を除去し、DOM属性やテキスト出力における制御文字注入を防ぐ
+    return name.replace(/[\u0000-\u001F\u007F-\u009F]/g, '');
   }
 
   getFieldNameLabel(key) {
