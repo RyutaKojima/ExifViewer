@@ -105,6 +105,17 @@ test('ExifUtil should safely handle primitive or invalid non-object configs with
   assert.equal(invalidReplaceUtil.getExifValueLabel('InvalidReplace', 'length'), 'length');
 });
 
+test('ExifUtil should safely handle array objects without property leakage (e.g. length)', () => {
+  const arrayConfigUtil = new ExifUtil(['item1', 'item2'], ['item1', 'item2']);
+  assert.equal(arrayConfigUtil.getFieldNameLabel('length'), 'length');
+  assert.equal(arrayConfigUtil.getExifValueLabel('length', 'val'), 'val');
+
+  const arrayLabelUtil = new ExifUtil({}, {
+    ArrayReplace: { type: 'replace', label: ['option0', 'option1'] },
+  });
+  assert.equal(arrayLabelUtil.getExifValueLabel('ArrayReplace', 'length'), 'length');
+});
+
 test('ExifUtil should return null and undefined keys/values as-is without formatting coercion', () => {
   const valueFormatConfig = {
     FocalLength: { type: 'suffix', label: 'mm' },
