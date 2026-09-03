@@ -80,19 +80,26 @@ $(() => {
       $infoBox.text('Exif情報の解析に失敗しました。');
     }
 
-    const img = new Image();
-    const cleanup = (event) => {
-      windowURL.revokeObjectURL(event.target.src);
-      event.target.removeEventListener('load', cleanup);
-      event.target.removeEventListener('error', cleanup);
-    };
-    const safeName = ExifUtil.sanitizeFileName(file ? file.name : '');
-    img.alt = safeName;
-    img.title = safeName;
-    img.src = windowURL.createObjectURL(file);
-    img.addEventListener('load', cleanup);
-    img.addEventListener('error', cleanup);
-    $imageBox.append(img);
+    try {
+      const img = new Image();
+      const cleanup = (event) => {
+        if (windowURL && typeof windowURL.revokeObjectURL === 'function') {
+          windowURL.revokeObjectURL(event.target.src);
+        }
+        event.target.removeEventListener('load', cleanup);
+        event.target.removeEventListener('error', cleanup);
+      };
+      const safeName = ExifUtil.sanitizeFileName(file ? file.name : '');
+      img.alt = safeName;
+      img.title = safeName;
+      img.src = windowURL.createObjectURL(file);
+      img.addEventListener('load', cleanup);
+      img.addEventListener('error', cleanup);
+      $imageBox.append(img);
+    } catch (error) {
+      // オブジェクトURL生成時などのエラーをキャッチし、不完全な状態を防ぐ
+      $imageBox.text('プレビュー画像の生成に失敗しました。');
+    }
   };
 
   $('body')

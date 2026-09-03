@@ -7,6 +7,7 @@ test('ExifUtil.sanitizeFileName should sanitize file names containing control ch
   assert.equal(ExifUtil.sanitizeFileName('photo\u0000\u001F.jpg'), 'photo.jpg');
   assert.equal(ExifUtil.sanitizeFileName('test\r\nname.jpg'), 'testname.jpg');
   assert.equal(ExifUtil.sanitizeFileName('bad\u007Ffile.jpg'), 'badfile.jpg');
+  assert.equal(ExifUtil.sanitizeFileName('c1_\u0080_\u009F_control.jpg'), 'c1___control.jpg');
   assert.equal(ExifUtil.sanitizeFileName(null), '');
   assert.equal(ExifUtil.sanitizeFileName(undefined), '');
   assert.equal(ExifUtil.sanitizeFileName(12345), '');
