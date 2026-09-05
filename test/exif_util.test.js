@@ -135,3 +135,10 @@ test('ExifUtil should return null and undefined keys/values as-is without format
   assert.equal(exifUtil.getExifValueLabel('Orientation', null), null);
   assert.equal(exifUtil.getExifValueLabel('Orientation', undefined), undefined);
 });
+
+test('ExifUtil helper methods safely handle invalid or missing inputs', () => {
+  assert.equal(ExifUtil.isSupport('image/jpeg; invalid_params'), true);
+  assert.equal(ExifUtil.isSupport(12345), false);
+  assert.equal(ExifUtil.sanitizeFileName(''), '');
+  assert.equal(ExifUtil.sanitizeFileName(null), '');
+});
