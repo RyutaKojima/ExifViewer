@@ -110,24 +110,31 @@ $(() => {
     })
     .on('dragover', cancelEvent)
     .on('drop', (event) => {
+      cancelEvent(event);
       $exifInfo.empty();
       $previewArea.empty();
 
       $dropArea.removeClass('dropping');
       $overlay.hide();
-      return cancelEvent(event);
+      return false;
     });
 
   $dropArea
     .on('drop', (event) => {
-      // ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
-      const file = event.originalEvent.dataTransfer.files[0];
-
-      analyzeExif(file, $exifInfo, $previewArea);
+      // ドロップ時のデフォルト動作(ブラウザのファイルナビゲーション/タブハイジャック)を即座にキャンセル
+      cancelEvent(event);
 
       $dropArea.removeClass('dropping');
       $overlay.hide();
-      return cancelEvent(event);
+
+      // 非ファイルや不正なドロップイベントによる TypeError 発生を防ぐ安全なプロパティアクセス
+      const files = event && event.originalEvent && event.originalEvent.dataTransfer
+        ? event.originalEvent.dataTransfer.files
+        : null;
+      const file = (files && files.length > 0) ? files[0] : null;
+
+      analyzeExif(file, $exifInfo, $previewArea);
+      return false;
     });
 
   return true;
