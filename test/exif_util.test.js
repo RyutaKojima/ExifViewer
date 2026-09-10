@@ -135,3 +135,23 @@ test('ExifUtil should return null and undefined keys/values as-is without format
   assert.equal(exifUtil.getExifValueLabel('Orientation', null), null);
   assert.equal(exifUtil.getExifValueLabel('Orientation', undefined), undefined);
 });
+
+test('ExifUtil should safely handle non-primitive keys and values without throwing exceptions', () => {
+  const valueFormatConfig = {
+    Orientation: {
+      type: 'replace',
+      label: { 1: 'そのまま' },
+    },
+  };
+  const exifUtil = new ExifUtil({ Make: 'メーカー' }, valueFormatConfig);
+
+  const errorObj = {
+    toString() {
+      throw new Error('toString error');
+    },
+  };
+
+  assert.equal(exifUtil.getFieldNameLabel(errorObj), errorObj);
+  assert.equal(exifUtil.getExifValueLabel(errorObj, 'val'), 'val');
+  assert.equal(exifUtil.getExifValueLabel('Orientation', errorObj), errorObj);
+});
