@@ -29,6 +29,11 @@ export default class ExifUtil {
     if (key == null) {
       return key;
     }
+    // 非プリミティブキーの型変換に伴う副作用や例外を防止
+    const isPrimitiveKey = typeof key === 'string' || typeof key === 'number';
+    if (!isPrimitiveKey) {
+      return key;
+    }
     const hasProp = isObject(this.FieldName)
       && Object.prototype.hasOwnProperty.call(this.FieldName, key);
     return hasProp ? this.FieldName[key] : key;
@@ -36,6 +41,11 @@ export default class ExifUtil {
 
   getExifValueLabel(key, value) {
     if (value == null) {
+      return value;
+    }
+    // 非プリミティブキーの型変換に伴う副作用や例外を防止
+    const isPrimitiveKey = typeof key === 'string' || typeof key === 'number';
+    if (!isPrimitiveKey) {
       return value;
     }
     const hasFormat = isObject(this.ValueFormat)
@@ -54,7 +64,10 @@ export default class ExifUtil {
     // Fast-path early returns to avoid unnecessary variable re-assignments
     // and switch evaluation overhead
     if (formatType === 'replace') {
-      const hasReplaced = isObject(formatLabel)
+      // 置換マップ検索時の型変換に伴う例外や副作用を防止
+      const isPrimitiveValue = typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean';
+      const hasReplaced = isPrimitiveValue
+        && isObject(formatLabel)
         && Object.prototype.hasOwnProperty.call(formatLabel, value);
       return hasReplaced ? formatLabel[value] : value;
     }
