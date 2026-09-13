@@ -120,14 +120,19 @@ $(() => {
 
   $dropArea
     .on('drop', (event) => {
-      // ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
-      const file = event.originalEvent.dataTransfer.files[0];
-
-      analyzeExif(file, $exifInfo, $previewArea);
+      // イベントを早期キャンセルし、デフォルトのファイル遷移動作を防ぐ
+      cancelEvent(event);
 
       $dropArea.removeClass('dropping');
       $overlay.hide();
-      return cancelEvent(event);
+
+      // 不正なドロップイベント構造時の TypeError 発生を防ぐ安全なアクセスガード
+      const dataTransfer = event && event.originalEvent && event.originalEvent.dataTransfer;
+      const file = (dataTransfer && dataTransfer.files) ? dataTransfer.files[0] : null;
+
+      analyzeExif(file, $exifInfo, $previewArea);
+
+      return false;
     });
 
   return true;
