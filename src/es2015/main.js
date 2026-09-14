@@ -104,30 +104,40 @@ $(() => {
 
   $('body')
     .on('dragenter', (event) => {
+      cancelEvent(event);
       $dropArea.addClass('dropping');
       $overlay.show();
-      return cancelEvent(event);
+      return false;
     })
     .on('dragover', cancelEvent)
     .on('drop', (event) => {
+      cancelEvent(event);
       $exifInfo.empty();
       $previewArea.empty();
 
       $dropArea.removeClass('dropping');
       $overlay.hide();
-      return cancelEvent(event);
+      return false;
     });
 
   $dropArea
     .on('drop', (event) => {
-      // ファイルは複数ドロップされる可能性がありますが, 1 つ目のファイルだけ扱います.
-      const file = event.originalEvent.dataTransfer.files[0];
-
-      analyzeExif(file, $exifInfo, $previewArea);
+      // デフォルトのファイル遷移（タブ乗っ取り）を防ぐため、プロパティ参照の前に必ずキャンセルを実行
+      cancelEvent(event);
 
       $dropArea.removeClass('dropping');
       $overlay.hide();
-      return cancelEvent(event);
+
+      // 安全なプロパティアクセスにより TypeError クラッシュおよび未処理例外を防止
+      const dataTransfer = event.originalEvent && event.originalEvent.dataTransfer;
+      const files = dataTransfer && dataTransfer.files;
+      const file = (files && files.length > 0) ? files[0] : null;
+
+      if (file) {
+        analyzeExif(file, $exifInfo, $previewArea);
+      }
+
+      return false;
     });
 
   return true;
