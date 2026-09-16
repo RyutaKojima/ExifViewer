@@ -29,6 +29,9 @@ export default class ExifUtil {
     if (key == null) {
       return key;
     }
+    if (typeof key !== 'string' && typeof key !== 'number') {
+      return key;
+    }
     const hasProp = isObject(this.FieldName)
       && Object.prototype.hasOwnProperty.call(this.FieldName, key);
     return hasProp ? this.FieldName[key] : key;
@@ -54,6 +57,9 @@ export default class ExifUtil {
     // Fast-path early returns to avoid unnecessary variable re-assignments
     // and switch evaluation overhead
     if (formatType === 'replace') {
+      if (typeof value !== 'string' && typeof value !== 'number') {
+        return value;
+      }
       const hasReplaced = isObject(formatLabel)
         && Object.prototype.hasOwnProperty.call(formatLabel, value);
       return hasReplaced ? formatLabel[value] : value;
