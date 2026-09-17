@@ -26,7 +26,7 @@ export default class ExifUtil {
   }
 
   getFieldNameLabel(key) {
-    if (key == null) {
+    if (key == null || (typeof key !== 'string' && typeof key !== 'number')) {
       return key;
     }
     const hasProp = isObject(this.FieldName)
@@ -39,6 +39,7 @@ export default class ExifUtil {
       return value;
     }
     const hasFormat = isObject(this.ValueFormat)
+      && (typeof key === 'string' || typeof key === 'number')
       && Object.prototype.hasOwnProperty.call(this.ValueFormat, key);
     if (!hasFormat) {
       return value;
@@ -55,6 +56,7 @@ export default class ExifUtil {
     // and switch evaluation overhead
     if (formatType === 'replace') {
       const hasReplaced = isObject(formatLabel)
+        && (typeof value === 'string' || typeof value === 'number')
         && Object.prototype.hasOwnProperty.call(formatLabel, value);
       return hasReplaced ? formatLabel[value] : value;
     }
